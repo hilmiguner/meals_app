@@ -19,7 +19,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
     String subtitle = "Only include " + title.toLowerCase() + " meals.";
 
     return SwitchListTile(
-      title: Text("Gluten Free"),
+      title: Text(title),
       subtitle: Text(subtitle),
       value: defaultValue,
       activeColor: Theme.of(context).primaryColor,
