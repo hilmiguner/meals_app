@@ -8,8 +8,8 @@ class CategoryItem extends StatelessWidget {
 
   CategoryItem({@required this.id, @required this.color, @required this.title});
 
-  void _selectedCagetory(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(CategoryMealsScreen.routeName,
+  void _selectedCagetory(BuildContext ctx) async {
+    await Navigator.of(ctx).pushNamed(CategoryMealsScreen.routeName,
         arguments: {"id": id, "title": title});
   }
 

@@ -5,6 +5,11 @@ import 'package:meals_app/models/meal.dart';
 class MealDetailScreen extends StatelessWidget {
   static const String routeName = "/meal-detail";
 
+  final Function _toggleFavorite;
+  final Function _isMealFavorited;
+
+  MealDetailScreen(this._toggleFavorite, this._isMealFavorited);
+
   Widget buildSectionTitle(BuildContext ctx, String text) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -34,6 +39,7 @@ class MealDetailScreen extends StatelessWidget {
     final String mealID = ModalRoute.of(context).settings.arguments;
 
     final Meal meal = DUMMY_MEALS.firstWhere((meal) => meal.id == mealID);
+
     return Scaffold(
       appBar: AppBar(
           title: Text(meal.title),
@@ -62,27 +68,41 @@ class MealDetailScreen extends StatelessWidget {
               ),
             )),
             buildSectionTitle(context, "Steps"),
-            buildContainer(ListView.builder(
-              itemCount: meal.steps.length,
-              itemBuilder: (context, index) => Column(
-                children: [
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: Text("# ${index + 1}"),
+            buildContainer(
+              ListView.builder(
+                itemCount: meal.steps.length,
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        child: Text("# ${index + 1}"),
+                      ),
+                      title: Text(meal.steps[index]),
                     ),
-                    title: Text(meal.steps[index]),
-                  ),
-                  if (index != meal.steps.length - 1)
-                    Divider(
-                      thickness: 3,
-                    ),
-                ],
+                    if (index != meal.steps.length - 1)
+                      Divider(
+                        thickness: 3,
+                      ),
+                  ],
+                ),
               ),
-            )),
+            ),
+            SizedBox(
+              height: 80,
+            ),
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          _isMealFavorited(mealID) ? Icons.star : Icons.star_border,
+          color: Theme.of(context).primaryColor,
+        ),
+        onPressed: () => _toggleFavorite(mealID),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
